@@ -1,0 +1,29 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Développeur web du rhône{% endblock %}
+
+{% block body %}
+
+<div class="container my-5">
+    <h1 class="h1 mt-3 mb-4">Projets</h1>
+    <div class="row">
+        {% for category in categories %}
+            {% for tag in tags %}
+                {% for project in projects %}
+                        <div class="col-md-4">
+                            <div class="card bg-light mb-3">
+                                <img src="{{ project.coverImage }}" alt="{{project.title}}" style="height: 200px; width: 100%; display:block;">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{project.title}}</h4>
+                                    <p class="card-text">{{project.introduction}}</p>
+                                    <a style="background-color:{{ category.colors }}; color:#FFF" href="project/{{project.slug}}" class="btn mt-3">En savoir +</a>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

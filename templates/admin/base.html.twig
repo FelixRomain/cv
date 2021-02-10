@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Administration</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        {% block stylesheet %}
+            <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+            <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+            <link rel="stylesheet" href="/build/common/admin/css/adminlte.min.css">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        </head>
+
+    {% endblock %}
+
+            <!-- Barre du haut bleue -->
+            {% include 'admin/_header.html.twig' %}
+            <!-- Menu de gauche -->
+            {% include 'admin/_menu.html.twig' %}
+
+                
+                    {% block body %}
+    
+                    {% endblock %}
+
+        {% block javascripts %}
+            <script src="/build/common/admin/js/jquery.min.js"></script>
+            <script src="/build/common/admin/js/jquery-ui.min.js"></script>
+            <script src="/build/common/admin/js/bootstrap.bundle.min.js"></script>
+            <script src="/build/common/admin/js/adminlte.js"></script>
+        {% endblock %}
+    </body>
+</html>

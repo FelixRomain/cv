@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TrainingRepository;
+use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TrainingRepository;
 
 /**
  * @ORM\Entity(repositoryClass=TrainingRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Training
 {
@@ -41,6 +45,38 @@ class Training
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImageTraining::class, mappedBy="training", orphanRemoval=true)
+     */
+    private $imageTrainings;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="trainings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+
+    public function __construct()
+    {
+        $this->imageTrainings = new ArrayCollection();
+    }
+
+    /**
+     * Permet d'initialiser le slug 
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug() {
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -106,4 +142,47 @@ class Training
 
         return $this;
     }
+
+    /**
+     * @return Collection|ImageTraining[]
+     */
+    public function getImageTrainings(): Collection
+    {
+        return $this->imageTrainings;
+    }
+
+    public function addImageTraining(ImageTraining $imageTraining): self
+    {
+        if (!$this->imageTrainings->contains($imageTraining)) {
+            $this->imageTrainings[] = $imageTraining;
+            $imageTraining->setTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImageTraining(ImageTraining $imageTraining): self
+    {
+        if ($this->imageTrainings->removeElement($imageTraining)) {
+            // set the owning side to null (unless already changed)
+            if ($imageTraining->getTraining() === $this) {
+                $imageTraining->setTraining(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
 }

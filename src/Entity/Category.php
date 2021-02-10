@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Category
 {
@@ -41,6 +43,21 @@ class Category
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
+
+       /**
+     * Permet d'initialiser le slug 
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug() {
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
+    }
 
     public function getId(): ?int
     {

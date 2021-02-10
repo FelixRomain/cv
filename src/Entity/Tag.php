@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\TagRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TagRepository;
 
 /**
  * @ORM\Entity(repositoryClass=TagRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Tag
 {
@@ -41,6 +43,21 @@ class Tag
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
+
+           /**
+     * Permet d'initialiser le slug 
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug() {
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->name);
+        }
+    }
 
     public function getId(): ?int
     {

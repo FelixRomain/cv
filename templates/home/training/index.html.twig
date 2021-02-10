@@ -1,0 +1,37 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Développeur web du rhône{% endblock %}
+
+{% block body %}
+
+<div class="container my-5">
+    <h1 class="h1 mt-3 mb-4">Articles</h1>
+    {% for category in categories %}
+        {% for tag in tags %}
+            {% for article in articles %}
+            <div class="row shadow rounded my-3 block-article">
+                <div class="col-md-3 p-2">
+                    <img src="{{ article.coverImage }}" alt="">
+                </div>
+                <div class="col-md-9 p-2">
+                    <span style="color:{{ category.colors }}; text-transform:uppercase; font-size: 0.75rem;">{{category.name}}</span>
+                    <h4 class="card-title" style="font-size: 1rem;font-weight:600;">{{ article.title }}</h4>
+                    <p class="my-1">{{ article.introduction }}</p>
+                    <span style="border: 2px solid {{tag.colors}}; text-transform:uppercase; font-size: 0.65rem; padding:2px; color: {{tag.colors}}">{{tag.name}}</span>
+                    <a href="article/{{article.slug}}"><button type="button" class="button-article mt-2" style="background:{{ category.colors }}">Lire la suite</button></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+                {% else %}
+                    <tr>
+                        <td colspan="10">no records found</td>
+                    </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock %}

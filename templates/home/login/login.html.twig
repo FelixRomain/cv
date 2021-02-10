@@ -1,0 +1,65 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-md-3">&nbsp;</div>
+        <div class="col-md-6 mt-3">
+            <div class="bg-light py-3 px-3">
+                <h1>Connectez vous</h1>
+                <form action="{{ path('admin_login') }}" method="post">
+                    <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" name="_username" id="email" class="form-control" placeholder="Adresse email..." required>
+                    </div>
+                    <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="_password" id="password" placeholder="Mot de passe..." class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Connexion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>  
+</div> -->
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/build/assets/img/bg-01.jpg');">
+        <div class="wrap-login100">
+
+            {% if hasError %}
+
+                <div class="alert alert-danger text-center">Email ou mot de passe invalide</div>
+
+            {% endif %}
+
+            <form action="{{ path('admin_login') }}" method="post">
+
+                <span class="login100-form-title p-b-34 p-t-27">
+                    Connexion
+                </span>
+
+                <div class="wrap-input100 validate-input" data-validate = "Enter username">
+                    <input class="input100" id="email" type="text" name="_username" placeholder="Email" value="{{username}}" required>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Mot de passe">
+                    <input class="input100" type="password" name="_password" placeholder="Mot de passe" required>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn">
+                        Connexion
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

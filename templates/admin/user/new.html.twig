@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h1 mt-3 mb-4">Création des utilisateurs</h1>
+
+
+        {{ include('admin/user/_form.html.twig') }}
+
+        <a href="{{ path('admin_user_index') }}">Retour à l'administration</a>
+    </div>
+{% endblock %}

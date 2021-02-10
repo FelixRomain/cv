@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ProjectRepository;
+use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProjectRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Project
 {
@@ -41,6 +45,38 @@ class Project
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ImageProject::class, mappedBy="project", orphanRemoval=true)
+     */
+    private $imageProjects;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="projects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+
+    public function __construct()
+    {
+        $this->imageProjects = new ArrayCollection();
+    }
+
+       /**
+     * Permet d'initialiser le slug 
+     * 
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function initializeSlug() {
+        if(empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -106,4 +142,47 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return Collection|ImageProject[]
+     */
+    public function getImageProjects(): Collection
+    {
+        return $this->imageProjects;
+    }
+
+    public function addImageProject(ImageProject $imageProject): self
+    {
+        if (!$this->imageProjects->contains($imageProject)) {
+            $this->imageProjects[] = $imageProject;
+            $imageProject->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImageProject(ImageProject $imageProject): self
+    {
+        if ($this->imageProjects->removeElement($imageProject)) {
+            // set the owning side to null (unless already changed)
+            if ($imageProject->getProject() === $this) {
+                $imageProject->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
 }

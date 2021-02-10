@@ -1,0 +1,43 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h1 mt-3 mb-4">Informations de l'utilisateur {{ user.firstName }} {{ user.lastName }}</h1>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Picture</th>
+                    <td>{{ user.picture }}</td>
+                </tr>
+                <tr>
+                    <th>Hash</th>
+                    <td>{{ user.hash }}</td>
+                </tr>
+                <tr>
+                    <th>Introduction</th>
+                    <td>{{ user.introduction }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ user.description }}</td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>{{ user.slug }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin_user_index') }}">Retour à l'administration</a>
+
+        <a href="{{ path('admin_user_edit', {'id': user.id}) }}">Modifier les informations</a>
+
+        {{ include('admin/user/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
